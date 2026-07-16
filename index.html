@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="studio.css" />
+<link rel="stylesheet" href="account.css" />
 </head>
 <body class="tr-body">
 
@@ -24,5 +25,14 @@
 <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="studio.js"></script>
+
+<!-- Cloud Supabase (auth + sauvegarde + partage). Optionnels :
+     si supabase-config.js est absent, l'éditeur fonctionne normalement hors-ligne. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="supabaseClient.js"></script>
+<script src="uiPopover.js"></script>
+<script src="auth.js"></script>
+<script src="cloud.js"></script>
 </body>
 </html>

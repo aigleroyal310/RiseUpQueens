@@ -1,0 +1,207 @@
+/* =====================================================
+   ACCOUNT / CLOUD — styles partagés (track.html + popovers
+   auth / partage / compte injectés dans index.html)
+   ===================================================== */
+:root {
+  --ac-bg: #0e0a14;
+  --ac-panel: #181220;
+  --ac-border: #2c2438;
+  --ac-text: #f4eff8;
+  --ac-muted: #a99fb6;
+  --ac-accent: #e59ad4;
+  --ac-accent-text: #1a0f18;
+  --ac-input-bg: #221a30;
+  --ac-danger: #e0665f;
+  --ac-ok: #5be9c2;
+}
+
+* { box-sizing: border-box; }
+body.ac-body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ac-bg);
+  color: var(--ac-text);
+  font-family: 'Poppins', system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ac-topbar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--ac-border);
+  background: var(--ac-panel);
+}
+.ac-logo {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: var(--ac-accent); color: var(--ac-accent-text);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 15px;
+}
+.ac-brand { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 18px; }
+.ac-topbar .ac-spacer { flex: 1; }
+.ac-topbar a { color: var(--ac-muted); text-decoration: none; font-size: 13px; font-weight: 600; }
+.ac-topbar a:hover { color: var(--ac-text); }
+
+.ac-card {
+  width: 100%;
+  max-width: 420px;
+  margin: 40px 16px;
+  background: var(--ac-panel);
+  border: 1px solid var(--ac-border);
+  border-radius: 16px;
+  padding: 26px;
+  box-shadow: 0 24px 60px -28px rgba(0,0,0,0.8);
+}
+.ac-card h1 { font-family: 'Playfair Display', serif; font-size: 26px; margin: 0 0 4px; }
+.ac-card .ac-sub { color: var(--ac-muted); font-size: 13px; margin: 0 0 20px; }
+
+.ac-tabs { display: flex; gap: 4px; background: var(--ac-bg); border: 1px solid var(--ac-border); border-radius: 10px; padding: 3px; margin-bottom: 20px; }
+.ac-tab { flex: 1; border: none; background: transparent; color: var(--ac-muted); font-weight: 600; font-size: 13px; padding: 9px; border-radius: 8px; cursor: pointer; font-family: inherit; }
+.ac-tab.active { background: var(--ac-accent); color: var(--ac-accent-text); }
+
+.ac-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.ac-field label { font-size: 12px; font-weight: 600; color: var(--ac-muted); letter-spacing: .3px; }
+.ac-field input {
+  background: var(--ac-input-bg); border: 1px solid var(--ac-border); color: var(--ac-text);
+  border-radius: 9px; padding: 11px 12px; font-size: 14px; font-family: inherit; outline: none;
+}
+.ac-field input:focus { border-color: var(--ac-accent); }
+.ac-field .ac-hint { font-size: 11px; color: var(--ac-muted); }
+
+.ac-btn {
+  width: 100%; border: none; border-radius: 10px; padding: 12px;
+  background: var(--ac-accent); color: var(--ac-accent-text);
+  font-weight: 700; font-size: 14px; cursor: pointer; font-family: inherit;
+}
+.ac-btn:disabled { opacity: .5; cursor: default; }
+.ac-btn.ac-ghost { background: transparent; color: var(--ac-text); border: 1px solid var(--ac-border); }
+.ac-btn.ac-danger { background: transparent; color: var(--ac-danger); border: 1px solid rgba(224,102,95,.4); }
+
+.ac-msg { margin-top: 14px; font-size: 13px; padding: 10px 12px; border-radius: 9px; display: none; }
+.ac-msg.show { display: block; }
+.ac-msg.err { background: rgba(224,102,95,.12); color: #ff9b95; border: 1px solid rgba(224,102,95,.3); }
+.ac-msg.ok  { background: rgba(91,233,194,.12); color: var(--ac-ok); border: 1px solid rgba(91,233,194,.3); }
+.ac-msg.info{ background: rgba(229,154,212,.1); color: var(--ac-accent); border: 1px solid rgba(229,154,212,.25); }
+
+.ac-signedin { text-align: center; }
+.ac-signedin .ac-avatar {
+  width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 12px;
+  background: var(--ac-accent); color: var(--ac-accent-text);
+  display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 26px;
+}
+.ac-signedin .ac-uname { font-size: 20px; font-weight: 700; }
+.ac-signedin .ac-email { color: var(--ac-muted); font-size: 13px; margin-bottom: 20px; }
+.ac-actions { display: flex; flex-direction: column; gap: 9px; }
+
+.ac-hidden { display: none !important; }
+
+/* ---- Panneau cloud flottant (index.html) ---- */
+.ac-fab {
+  position: fixed; right: 20px; bottom: 20px; z-index: 60;
+  border: none; border-radius: 999px; padding: 12px 18px;
+  background: var(--ac-accent); color: var(--ac-accent-text);
+  font-weight: 700; font-size: 14px; cursor: pointer; font-family: 'Poppins', sans-serif;
+  box-shadow: 0 12px 30px -10px rgba(0,0,0,.6);
+}
+.ac-modal-backdrop { position: fixed; inset: 0; z-index: 61; background: rgba(0,0,0,.55); display: flex; align-items: center; justify-content: center; }
+.ac-modal { width: 100%; max-width: 460px; margin: 16px; max-height: 86vh; overflow: auto; background: var(--ac-panel); border: 1px solid var(--ac-border); border-radius: 16px; padding: 22px; box-shadow: 0 24px 60px -20px rgba(0,0,0,.8); }
+.ac-modal h2 { font-family: 'Playfair Display', serif; font-size: 20px; margin: 0 0 16px; }
+.ac-modal-close { float: right; background: transparent; border: none; color: var(--ac-muted); font-size: 22px; cursor: pointer; line-height: 1; }
+
+.ac-list { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-direction: column; gap: 8px; }
+.ac-list li { display: flex; align-items: center; gap: 10px; background: var(--ac-bg); border: 1px solid var(--ac-border); border-radius: 10px; padding: 10px 12px; }
+.ac-list .ac-li-title { flex: 1; min-width: 0; font-weight: 600; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ac-list .ac-li-badge { font-size: 10px; font-weight: 700; letter-spacing: .5px; padding: 3px 7px; border-radius: 6px; background: rgba(91,233,194,.15); color: var(--ac-ok); }
+.ac-list button { background: transparent; border: 1px solid var(--ac-border); color: var(--ac-text); border-radius: 8px; padding: 6px 10px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.ac-list button:hover { border-color: var(--ac-accent); }
+
+.ac-share-row { display: flex; gap: 8px; margin-top: 10px; }
+.ac-share-row input { flex: 1; min-width: 0; background: var(--ac-input-bg); border: 1px solid var(--ac-border); color: var(--ac-text); border-radius: 9px; padding: 10px; font-size: 12px; font-family: inherit; }
+
+.ac-track-wrap { width: 100%; display: flex; justify-content: center; padding: 30px 16px; }
+.ac-center { min-height: 60vh; display: flex; align-items: center; justify-content: center; color: var(--ac-muted); font-size: 15px; text-align: center; }
+
+/* ---- Lien "Se connecter" dans le header de l'éditeur ---- */
+a.tr-btn-account { text-decoration: none; display: inline-flex; align-items: center; }
+
+/* ---- Popover "Partager" (header de index.html) ----
+   Utilise les variables --tr-* de studio.css → s'adapte au thème courant. */
+.ac-popover {
+  position: fixed; z-index: 70; width: 260px;
+  background: var(--tr-panel, #181220);
+  border: 1px solid var(--tr-border, #2c2438);
+  border-radius: 14px;
+  box-shadow: 0 16px 40px -12px rgba(0,0,0,0.45);
+  padding: 14px;
+  color: var(--tr-text, #f4eff8);
+  font-family: 'Poppins', sans-serif;
+}
+.ac-pop-section { display: flex; flex-direction: column; gap: 9px; }
+.ac-pop-title { font-size: 11px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--tr-muted, #a99fb6); }
+.ac-pop-row { display: flex; gap: 8px; }
+.ac-pop-btn {
+  flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  border: 1px solid var(--tr-border, #2c2438); background: var(--tr-app-bg, #0e0a14);
+  color: var(--tr-text, #f4eff8); border-radius: 10px; padding: 9px 10px;
+  font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit;
+  transition: border-color .12s ease; text-decoration: none;
+}
+.ac-pop-btn:hover { border-color: var(--tr-accent, #e59ad4); }
+.ac-pop-btn.ac-full { width: 100%; }
+.ac-pop-btn.ac-primary { background: var(--tr-accent, #e59ad4); color: var(--tr-accent-text, #1a0f18); border-color: var(--tr-accent, #e59ad4); }
+.ac-pop-btn:disabled { opacity: .6; cursor: default; }
+.ac-pop-divider { height: 1px; background: var(--tr-border, #2c2438); margin: 12px 0; }
+.ac-pop-note { font-size: 12px; color: var(--tr-muted, #a99fb6); line-height: 1.45; }
+.ac-pop-note.ok { color: #4caf7d; }
+.ac-pop-share { display: flex; gap: 6px; }
+.ac-pop-share input {
+  flex: 1; min-width: 0; background: var(--tr-input-bg, #221a30);
+  border: 1px solid var(--tr-border, #2c2438); color: var(--tr-text, #f4eff8);
+  border-radius: 9px; padding: 8px 10px; font-size: 12px; font-family: inherit;
+}
+.ac-pop-share button {
+  border: none; background: var(--tr-accent, #e59ad4); color: var(--tr-accent-text, #1a0f18);
+  border-radius: 9px; padding: 8px 12px; font-weight: 700; font-size: 12px; cursor: pointer; font-family: inherit;
+}
+.ac-pop-note.err { color: #e0665f; }
+
+/* Popover large (compte + liste) + scroll si beaucoup de tracks */
+.ac-popover.ac-pop-wide { width: 340px; }
+.ac-popover { max-height: 78vh; overflow: auto; }
+
+/* ---- Onglets connexion / inscription (popover auth) ---- */
+.ac-pop-tabs { display: flex; gap: 3px; background: var(--tr-app-bg, #0e0a14); border: 1px solid var(--tr-border, #2c2438); border-radius: 10px; padding: 3px; margin-bottom: 12px; }
+.ac-pop-tab { flex: 1; border: none; background: transparent; color: var(--tr-muted, #a99fb6); font-weight: 600; font-size: 12px; padding: 8px; border-radius: 8px; cursor: pointer; font-family: 'Poppins', sans-serif; }
+.ac-pop-tab.active { background: var(--tr-accent, #e59ad4); color: var(--tr-accent-text, #1a0f18); }
+.ac-pop-label { display: block; font-size: 11px; font-weight: 600; color: var(--tr-muted, #a99fb6); margin: 8px 0 4px; }
+.ac-pop-input {
+  width: 100%; background: var(--tr-input-bg, #221a30); border: 1px solid var(--tr-border, #2c2438);
+  color: var(--tr-text, #f4eff8); border-radius: 9px; padding: 9px 10px; font-size: 13px;
+  font-family: 'Poppins', sans-serif; outline: none;
+}
+.ac-pop-input:focus { border-color: var(--tr-accent, #e59ad4); }
+.ac-pop-auth .ac-pop-btn.ac-primary { margin-top: 12px; }
+.ac-pop-note.ok { color: #4caf7d; }
+
+/* ---- Liste des track records (popover compte) ---- */
+.ac-pop-list { list-style: none; padding: 0; margin: 10px 0 0; display: flex; flex-direction: column; gap: 7px; }
+.ac-pop-list .ac-empty { color: var(--tr-muted, #a99fb6); font-size: 12px; padding: 6px 2px; }
+.ac-li { background: var(--tr-app-bg, #0e0a14); border: 1px solid var(--tr-border, #2c2438); border-radius: 10px; padding: 9px 10px; }
+.ac-li-head { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+.ac-li-title { flex: 1; min-width: 0; font-weight: 600; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--tr-text, #f4eff8); }
+.ac-li-badge { font-size: 9px; font-weight: 800; letter-spacing: .5px; padding: 3px 6px; border-radius: 6px; }
+.ac-li-badge.pub { background: rgba(76,175,125,.16); color: #4caf7d; }
+.ac-li-badge.priv { background: rgba(169,159,182,.16); color: var(--tr-muted, #a99fb6); }
+.ac-li-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.ac-li-actions button {
+  border: 1px solid var(--tr-border, #2c2438); background: transparent; color: var(--tr-text, #f4eff8);
+  border-radius: 8px; padding: 5px 9px; font-size: 11.5px; font-weight: 600; cursor: pointer; font-family: 'Poppins', sans-serif;
+}
+.ac-li-actions button:hover { border-color: var(--tr-accent, #e59ad4); }
+.ac-li-actions button.ac-del { color: #e0665f; border-color: rgba(224,102,95,.35); }
+.ac-li-actions button.ac-del:hover { border-color: #e0665f; }

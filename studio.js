@@ -510,6 +510,11 @@ function render() {
 
 function renderHeader() {
   const el = $('#trHeader');
+  // Bouton compte dynamique : "Se connecter" si déconnecté, sinon le username.
+  const displayName = (window.trAuth && window.trAuth.getDisplayName) ? window.trAuth.getDisplayName() : null;
+  const accountBtn = displayName
+    ? `<button class="tr-btn tr-btn-account" id="btnAccount" data-pop-trigger title="Mon compte">👤 ${escapeHtml(displayName)}</button>`
+    : `<button class="tr-btn tr-btn-account" id="btnLogin" data-pop-trigger>Se connecter / S'inscrire</button>`;
   el.innerHTML = `
     <div class="tr-header-left">
       <div class="tr-logo">TR</div>
@@ -524,18 +529,18 @@ function renderHeader() {
           `<button class="tr-theme-btn${state.theme === id ? ' active' : ''}" data-theme-id="${id}">${label}</button>`
         ).join('')}
       </div>
-      <button class="tr-btn tr-btn-primary" id="btnExportPng">↓ PNG</button>
-      <button class="tr-btn" id="btnExportPdf">↓ PDF</button>
+      <button class="tr-btn tr-btn-primary" id="btnShare" data-pop-trigger>Partager</button>
       <button class="tr-btn" id="btnExportJson">Exporter</button>
       <button class="tr-btn" id="btnImportJson">Importer</button>
+      ${accountBtn}
     </div>
   `;
   $('#hdrTitle').addEventListener('input', e => { state.seasonTitle = e.target.value; saveState(); syncTitleInputs(); });
   $$('#themeSwitch [data-theme-id]').forEach(btn => {
     btn.addEventListener('click', () => setState({ theme: btn.dataset.themeId }));
   });
-  $('#btnExportPng').addEventListener('click', exportPng);
-  $('#btnExportPdf').addEventListener('click', exportPdf);
+  // Le bouton #btnShare est géré par cloud.js (délégation d'événements) car son
+  // popover doit survivre aux re-render du header.
   $('#btnExportJson').addEventListener('click', exportJson);
   $('#btnImportJson').addEventListener('click', importJson);
 }
@@ -879,3 +884,21 @@ function renderMenu() {
 /* ===================== INIT ===================== */
 render();
 rowTops = captureRowTops();
+
+/* ===================== HOOK CLOUD (utilisé par cloud.js) =====================
+   Petite API stable pour lire/écrire le track courant depuis un autre script,
+   sans exposer les internes de l'éditeur. */
+window.trStudio = {
+  getData: () => serialize(),
+  getTitle: () => state.seasonTitle || 'Ma Saison',
+  setData: (d) => {
+    if (!d) return;
+    d.placements = reconcilePlacements(d.placements);
+    Object.assign(state, defaultData(), d, { menuCell: null });
+    saveState();
+    render();
+  },
+  exportPng: () => exportPng(),
+  exportPdf: () => exportPdf(),
+  renderHeader: () => renderHeader()
+};
